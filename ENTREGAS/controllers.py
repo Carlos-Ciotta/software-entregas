@@ -2,7 +2,7 @@ import requests
 from models import Entrega
 
 def get_all():
-    url = 'https://api-production-72e9.up.railway.app/entregas/'
+    url = 'https://api-production-72e9.up.railway.app/entrega/'
     response = requests.get(url)
 
     # Verifica se a solicitação foi bem-sucedida (código de status 200)
@@ -16,7 +16,7 @@ def get_all():
     return tuplas
 
 def get_by_id(id:int):
-    url = f'http://api-production-72e9.up.railway.app/entregas/{id}'
+    url = f'http://api-production-72e9.up.railway.app/entrega/{id}'
     response = requests.get(url)
 
     # Verifica se a solicitação foi bem-sucedida (código de status 200)
@@ -30,7 +30,7 @@ def get_by_id(id:int):
     return data
 
 def post(entrega_i:Entrega):
-    url = 'https://api-production-72e9.up.railway.app/entregas/post'
+    url = 'https://api-production-72e9.up.railway.app/entrega/post'
     dados = entrega_i.__dict__
 
     response = requests.post(url, json=dados)

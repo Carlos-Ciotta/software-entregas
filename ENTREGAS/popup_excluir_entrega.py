@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from interface_admin import Ui_MainWindow
+from controllers import delete_by_id, get_by_id
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -42,7 +43,9 @@ class Ui_Form(object):
         self.pushButton_nao = QtWidgets.QPushButton(Form)
         self.pushButton_nao.setGeometry(QtCore.QRect(214, 240, 111, 31))
         self.pushButton_nao.setObjectName("pushButton_nao")
-
+        ####inclui valores
+        self.altera_label()
+        ########
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
@@ -58,8 +61,15 @@ class Ui_Form(object):
         self.pushButton_nao.setText(_translate("Form", "Não"))
 
     def delete(self):
-        print(f"DELETA O ID:{id}")
-    
+        id = Ui_MainWindow.get_id
+        delete_by_id(id)
+
+    def altera_label(self):
+        response = Ui_MainWindow.get_id
+        self.label_nome_cliente.setText(response)
+        #self.label_endereco.setText(array[2])
+        #self.label_status.setText(array[3])
+        #self.label_telefone.setText(array[1])
 
 if __name__ == "__main__":
     import sys

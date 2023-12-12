@@ -1,6 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from controllers import get_all
-
+from controllers import get_all, put_status, delete_by_id
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -64,6 +63,7 @@ class Ui_MainWindow(object):
         font.setPointSize(12)
         #populate
         self.populate_table()
+        #####################
         self.pushButton_sair.setFont(font)
         self.pushButton_sair.setObjectName("pushButton_sair")
         self.pushButton_atualizar = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.populate_table())
@@ -83,13 +83,13 @@ class Ui_MainWindow(object):
         self.plainTextEdit_id = QtWidgets.QPlainTextEdit(self.centralwidget)
         self.plainTextEdit_id.setGeometry(QtCore.QRect(60, 770, 104, 25))
         self.plainTextEdit_id.setObjectName("plainTextEdit_id")
-        self.pushButton_status = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.get_data())
+        self.pushButton_status = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.alterar_status())
         self.pushButton_status.setGeometry(QtCore.QRect(20, 812, 151, 31))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.pushButton_status.setFont(font)
         self.pushButton_status.setObjectName("pushButton_status")
-        self.pushButton_excluir = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.popup())
+        self.pushButton_excluir = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.delete_data())
         self.pushButton_excluir.setGeometry(QtCore.QRect(260, 810, 151, 31))
         font = QtGui.QFont()
         font.setPointSize(12)
@@ -158,23 +158,36 @@ class Ui_MainWindow(object):
         except Exception as e:
             print(f"Erro {e}")
 
-    def get_data(self):
-        id = self.plainTextEdit_id.toPlainText()
+    def alterar_status(self):
+        id = int(self.plainTextEdit_id.toPlainText())
         status = self.comboBox.currentText()
         self.plainTextEdit_id.clear()
         self.comboBox.setCurrentIndex(0)
-
-        return id, status
+        put_status(id, status)
     
     def close():
         MainWindow.close()
+
+    #def get_id(self):
+    #    id = int(self.plainTextEdit_id.toPlainText())
+    #    self.plainTextEdit_id.clear()
+    #    response = get_by_id(id)
+    #    return response
     
-    def popup(self):
-        from popup_excluir_entrega import Ui_Form
-        self.form = QtWidgets.QMainWindow()
-        self.ui = Ui_Form()
-        self.ui.setupUi(self.form)
-        self.form.show()
+    def delete_data(self):
+        id = int(self.plainTextEdit_id.toPlainText())
+        self.plainTextEdit_id.clear()
+        delete_by_id(id)
+        self.populate_table()
+    
+    #def popup(self):
+    #    from popup_excluir_entrega import Ui_Form
+    #    self.form = QtWidgets.QMainWindow()
+    #    self.ui = Ui_Form()
+    #    self.ui.setupUi(self.form)
+    #    self.form.findChild(QtWidgets.QLabel, "label_nome_cliente").setText("Novo Texto")
+    #    self.form.show()
+        
 
     def interface_inserir_entregas(self):
         from interface_insere_entrega import Ui_MainWindow
@@ -182,6 +195,8 @@ class Ui_MainWindow(object):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self.form)
         self.form.show()
+        
+
 
 if __name__ == "__main__":
     import sys

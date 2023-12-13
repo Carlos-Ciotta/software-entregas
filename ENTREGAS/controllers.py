@@ -1,5 +1,6 @@
 import requests
 from models import Entrega
+import json
 
 def get_all():
     url = 'https://api-production-e20e.up.railway.app/entregas/'
@@ -41,15 +42,11 @@ def post(entrega_i:Entrega):
         print("Falha na solicitação. Código de status:", response.status_code)
         print("Conteúdo da resposta:", response.text)
 
-def put_status(id:int, status:str):
-    url = f'https://api-production-e20e.up.railway.app/entregas/put/{id}'
-    dados = status.__dict__
+def put_status(status:str, id:int):
+    url = f'https://api-production-e20e.up.railway.app/entregas/put/s/{id}'
+    response = requests.put(url, params={'status': status})
 
-    response = requests.put(url, data=dados)
-
-    # Verifica se a solicitação foi bem-sucedida (código de status 200)
     if response.status_code == 200:
-        # A resposta da API está no formato JSON
         data = response.json()
         print("Dados da API:", data)
     else:

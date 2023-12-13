@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from controllers import get_all, put_status, delete_by_id
+from PyQt5.QtCore import QCoreApplication
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -57,15 +58,12 @@ class Ui_MainWindow(object):
         item.setFont(font)
         self.tableWidget.setHorizontalHeaderItem(5, item)
         self.tableWidget.horizontalHeader().setMinimumSectionSize(39)
-        self.pushButton_sair = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.close())
-        self.pushButton_sair.setGeometry(QtCore.QRect(960, 810, 151, 31))
+
         font = QtGui.QFont()
         font.setPointSize(12)
         #populate
         self.populate_table()
         #####################
-        self.pushButton_sair.setFont(font)
-        self.pushButton_sair.setObjectName("pushButton_sair")
         self.pushButton_atualizar = QtWidgets.QPushButton(self.centralwidget, clicked = lambda: self.populate_table())
         self.pushButton_atualizar.setGeometry(QtCore.QRect(960, 760, 151, 31))
         font = QtGui.QFont()
@@ -135,7 +133,6 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Telefone"))
         item = self.tableWidget.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "Status"))
-        self.pushButton_sair.setText(_translate("MainWindow", "Sair"))
         self.pushButton_atualizar.setText(_translate("MainWindow", "Atualizar"))
         self.label.setText(_translate("MainWindow", "ID"))
         self.pushButton_status.setText(_translate("MainWindow", "Alterar"))
@@ -159,14 +156,15 @@ class Ui_MainWindow(object):
             print(f"Erro {e}")
 
     def alterar_status(self):
-        id = int(self.plainTextEdit_id.toPlainText())
-        status = self.comboBox.currentText()
-        self.plainTextEdit_id.clear()
-        self.comboBox.setCurrentIndex(0)
-        put_status(id, status)
+        try:
+            id = int(self.plainTextEdit_id.toPlainText())
+            status = str(self.comboBox.currentText())
+            self.plainTextEdit_id.clear()
+            self.comboBox.setCurrentIndex(0)
+            put_status(status, id)
+        except Exception as e:
+            print(e)
     
-    def close():
-        MainWindow.close()
 
     #def get_id(self):
     #    id = int(self.plainTextEdit_id.toPlainText())
